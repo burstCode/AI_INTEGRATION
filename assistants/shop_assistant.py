@@ -1,6 +1,6 @@
 from bot import Bot
 from models.product import Product
-from database.database_manager import DatabaseManager
+from database.shop_database_manager import ShopDatabaseManager
 
 from typing import List, Dict, Optional
 import json
@@ -8,9 +8,9 @@ import json
 
 class ShopAssistant:
     bot: Bot
-    db: DatabaseManager
+    db: ShopDatabaseManager
 
-    def __init__(self, bot: Bot, db: DatabaseManager):
+    def __init__(self, bot: Bot, db: ShopDatabaseManager):
         """
         :param bot: Экземпляр класса Bot для взаимодействия с нейросетью
         """

@@ -4,9 +4,9 @@ from typing import Dict, List
 import sqlite3
 
 
-class DatabaseManager:
+class ShopDatabaseManager:
     """
-    Менеджер базы данных. Создает таблицы и позволяет работать с ними
+    Менеджер базы данных магазина. Создает соответсвующую таблицу и позволяет работать с данными в ней
     """
 
     def __init__(self, db_path: str = "ai_integration.db"):

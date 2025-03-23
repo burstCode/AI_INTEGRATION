@@ -1,6 +1,8 @@
+from assistants.reservation_assistant import ReservationAssistant
 from bot import Bot
-from database.database_manager import DatabaseManager
+from database.shop_database_manager  import ShopDatabaseManager
 from assistants.shop_assistant import ShopAssistant
+from database.reservation_database_manager import ReservationDatabaseManager
 from generators.products_generator import ProductsGenerator
 
 import config
@@ -15,17 +17,20 @@ if __name__ == "__main__":
     # Инициализируем бота
     bot = Bot(endpoint, github_token, model_name)
 
-    # Инициализация базы данных
-    db = DatabaseManager()
-
     user_input = ""
 
     while user_input != "0":
         print("--- Примеры интеграций больших языковых моделей в клиентоориентированные приложения ---")
-        print("Выберите контекст для рассмотрения:\n1. Интернет-магазин электроники\n0. Выход")
+        print("Выберите контекст для рассмотрения:\n"
+              "1. Интернет-магазин электроники\n"
+              "2. Бронирование столика в ресторане\n"
+              "0. Выход")
         user_input = input("> ")
 
         if user_input == "1":
+            # Инициализация базы данных
+            db = ShopDatabaseManager()
+
             # Инициализация помощника
             assistant = ShopAssistant(bot, db)
 
@@ -47,6 +52,25 @@ if __name__ == "__main__":
                 products = assistant.find_products(user_request)
                 for product in products:
                     print(product)
+        elif user_input == "2":
+            # Инициализация базы данных
+            db = ReservationDatabaseManager()
+
+            # Инициализация помощника
+            assistant = ReservationAssistant(bot, db)
+
+            user_request = ""
+
+            while user_request != "0":
+                # Запрос пользователя
+                user_request = input(
+                    "Введите запрос на естественном языке для бронирования столика (0 для выхода из контекста): ")
+
+                if user_request == "0":
+                    break
+
+                result = assistant.make_reservation(user_request)
+                print(result)
         elif user_input == "0":
             print("Пока-пока!")
         else:

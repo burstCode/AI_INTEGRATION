@@ -1,6 +1,6 @@
 from faker import Faker
 
-from database.database_manager import DatabaseManager
+from database.shop_database_manager import ShopDatabaseManager
 from models.product import Product
 
 # Списки характеристик
@@ -25,10 +25,10 @@ class ProductsGenerator:
     Генератор продуктов
     """
 
-    db: DatabaseManager
+    db: ShopDatabaseManager
     faker: Faker
 
-    def __init__(self, db: DatabaseManager):
+    def __init__(self, db: ShopDatabaseManager):
         self.db = db
         self.fake = Faker()
 
