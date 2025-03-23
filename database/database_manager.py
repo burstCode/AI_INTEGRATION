@@ -71,13 +71,6 @@ class DatabaseManager:
             conn.commit()
 
     def find_products(self, category: str, specs: Dict[str, str | List[str]]) -> List[Product]:
-        """
-
-                :param category: Категория товара
-                :param specs: Словарь характеристик товара
-                :return: Список найденных товаров
-                """
-
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             query = "SELECT name, category, ram, storage, processor, screen_size, gpu, resolution, refresh_rate, type, layout, backlight, dpi, buttons FROM products WHERE category = ?"
@@ -85,21 +78,41 @@ class DatabaseManager:
 
             for key, value in specs.items():
                 if isinstance(value, list):
-                    # Если значение — список, используем оператор IN
                     query += f" AND {key} IN ({', '.join(['?'] * len(value))})"
                     params.extend(value)
                 else:
-                    # Если значение — строка, используем оператор =
                     query += f" AND {key} = ?"
                     params.append(value)
 
             cursor.execute(query, params)
             rows = cursor.fetchall()
-            return [
-                Product(
+
+            # Формируем список объектов Product
+            products = []
+            for row in rows:
+                # Создаем словарь specs на основе данных из базы
+                product_specs = {
+                    "ram": row[2],
+                    "storage": row[3],
+                    "processor": row[4],
+                    "screen_size": row[5],
+                    "gpu": row[6],
+                    "resolution": row[7],
+                    "refresh_rate": row[8],
+                    "type": row[9],
+                    "layout": row[10],
+                    "backlight": row[11],
+                    "dpi": row[12],
+                    "buttons": row[13],
+                }
+                # Убираем None значения из словаря
+                product_specs = {k: v for k, v in product_specs.items() if v is not None}
+
+                # Создаем объект Product
+                products.append(Product(
                     name=row[0],
                     category=row[1],
-                    specs={key: row[i + 2] for i, key in enumerate(specs.keys())}
-                )
-                for row in rows
-            ]
+                    specs=product_specs
+                ))
+
+            return products

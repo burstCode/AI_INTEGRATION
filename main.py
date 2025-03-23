@@ -1,7 +1,7 @@
 from bot import Bot
 from database.database_manager import DatabaseManager
-from assistants.shopassistant import ShopAssistant
-from models.product import Product
+from assistants.shop_assistant import ShopAssistant
+from generators.products_generator import ProductsGenerator
 
 import config
 
@@ -18,19 +18,36 @@ if __name__ == "__main__":
     # Инициализация базы данных
     db = DatabaseManager()
 
-    # Добавление тестовых данных
-    # db.add_product(Product(name="Ноутбук A", category="ноутбуки",
-    #                        specs={"ram": "16 ГБ", "storage": "512 ГБ SSD", "processor": "Intel i7"}))
-    # db.add_product(Product(name="Ноутбук B", category="ноутбуки",
-    #                        specs={"ram": "32 ГБ", "storage": "1 ТБ SSD", "processor": "AMD Ryzen 7"}))
+    user_input = ""
 
-    # Инициализация помощника
-    assistant = ShopAssistant(bot, db)
+    while user_input != "0":
+        print("--- Примеры интеграций больших языковых моделей в клиентоориентированные приложения ---")
+        print("Выберите контекст для рассмотрения:\n1. Интернет-магазин электроники\n0. Выход")
+        user_input = input("> ")
 
-    # Запрос пользователя
-    user_request = "Мне нужен ноутбук с 16 или 32 ГБ оперативной памяти"
+        if user_input == "1":
+            # Инициализация помощника
+            assistant = ShopAssistant(bot, db)
 
-    # Поиск товаров
-    products = assistant.find_products(user_request)
-    for product in products:
-        print(product)
+            # Генерация тестовых данных
+            products_generator = ProductsGenerator(db)
+            products_generator.generate(20)
+
+            user_request = ""
+
+            while user_request != "0":
+                # Запрос пользователя
+                user_request = input(
+                    "Введите запрос для поиска подходящих товаров на естественном языке (0 для выхода из контекста): ")
+
+                if user_request == "0":
+                    break
+
+                # Поиск товаров
+                products = assistant.find_products(user_request)
+                for product in products:
+                    print(product)
+        elif user_input == "0":
+            print("Пока-пока!")
+        else:
+            print("Некорректный ввод!")
