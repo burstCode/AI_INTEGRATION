@@ -1,5 +1,7 @@
+from assistants.medical_assistent import MedicalAssistant
 from assistants.reservation_assistant import ReservationAssistant
 from bot import Bot
+from database.medical_database_manager import MedicalDatabaseManager
 from database.shop_database_manager  import ShopDatabaseManager
 from assistants.shop_assistant import ShopAssistant
 from database.reservation_database_manager import ReservationDatabaseManager
@@ -24,6 +26,7 @@ if __name__ == "__main__":
         print("Выберите контекст для рассмотрения:\n"
               "1. Интернет-магазин электроники\n"
               "2. Бронирование столика в ресторане\n"
+              "3. Обращение в скорую помощь\n"
               "0. Выход")
         user_input = input("> ")
 
@@ -71,6 +74,29 @@ if __name__ == "__main__":
 
                 result = assistant.make_reservation(user_request)
                 print(result)
+        elif user_input == "3":
+            # Инициализация БД
+            db_manager = MedicalDatabaseManager()
+
+            # Инициализация ассистента
+            assistant = MedicalAssistant(bot, db_manager)
+
+            user_input = ""
+
+            while user_input != "0":
+                user_request = input("На естественном языке введите запрос к службе скорой, например, опишите "
+                                     "симптомы (0 для выхода из контекста): ")
+
+                if user_request == "0":
+                    break
+
+                result = assistant.create_ticket(user_request)
+                print(result)
+
+                # Вывод всех тикетов
+                print("\nПоследние тикеты:")
+                for ticket in db_manager.get_tickets(5):
+                    print(f"#{ticket.id} [{ticket.priority.value}]: {', '.join(ticket.symptoms)}")
         elif user_input == "0":
             print("Пока-пока!")
         else:
