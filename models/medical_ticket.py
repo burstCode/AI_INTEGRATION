@@ -1,29 +1,12 @@
 from dataclasses import dataclass
 from datetime import datetime
-from enum import Enum
 
 
-class Priority(str, Enum):
-    LOW = "LOW"
-    MEDIUM = "MEDIUM"
-    HIGH = "HIGH"
-    CRITICAL = "CRITICAL"
-
-    @property
-    def display_name(self):
-        names = {
-            "LOW": "Низкий",
-            "MEDIUM": "Средний",
-            "HIGH": "Высокий",
-            "CRITICAL": "Критический"
-        }
-        return names[self.value]
-
-@dataclass
+@dataclass(init=True, repr=True)
 class MedicalTicket:
-    id: int | None  # None для новых тикетов
-    symptoms: list[str]
-    created_at: datetime
-    priority: Priority
-    patient_info: str | None = None  # Дополнительная информация о пациенте
-    status: str = "Новый"  # Статус обработки
+    medical_ticket_id: int
+    medical_ticket_symptoms: list[str]
+    medical_ticket_created_at: datetime
+    medical_ticket_priority: str   # НИЗКИЙ, СРЕДНИЙ, ВЫСОКИЙ, КРИТИЧЕСКИЙ
+    medical_ticket_patient_info: str | None = None  # Дополнительная информация о пациенте
+    medical_ticket_status: str = "Новый"

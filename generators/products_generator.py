@@ -1,6 +1,6 @@
 from faker import Faker
 
-from database.shop_database_manager import ShopDatabaseManager
+from database.database_manager import DatabaseManager
 from models.product import Product
 
 # Списки характеристик
@@ -25,17 +25,17 @@ class ProductsGenerator:
     Генератор продуктов
     """
 
-    db: ShopDatabaseManager
+    db: DatabaseManager
     faker: Faker
 
-    def __init__(self, db: ShopDatabaseManager):
+    def __init__(self, db: DatabaseManager):
         self.db = db
         self.fake = Faker()
 
     def generate(self, products_amount: int) -> None:
         """
-        Генерирует указанное количество товаров
-        :param products_amount: Количество товаров, требуемое для генерации
+        Генерирует указанное количество товаров.
+        :paPRODUCT_RAM products_amount: Количество товаров, требуемое для генерации.
         """
 
         products = []
@@ -50,53 +50,56 @@ class ProductsGenerator:
     def _insert_products(self, products: list):
         """
         Вставляет товары в базу данных.
-        :param products: Список товаров, которые нужно вставить в базу данных
+        :paPRODUCT_RAM products: Список товаров, которые нужно вставить в базу данных.
         """
 
         for product in products:
             self.db.add_product(product)
 
     def _generate_product(self, category: str) -> Product:
-        """Генерирует случайный товар с характеристиками в зависимости от категории."""
+        """
+        Генерирует случайный товар с характеристиками в зависимости от категории.
+        """
         specs = {}
 
         if category == "ноутбуки":
             specs.update({
-                "ram": self.fake.random_element(RAM_OPTIONS),
-                "storage": self.fake.random_element(STORAGE_OPTIONS),
-                "processor": self.fake.random_element(PROCESSOR_OPTIONS),
-                "screen_size": self.fake.random_element(SCREEN_SIZE_OPTIONS),
+                "PRODUCT_RAM": self.fake.random_element(RAM_OPTIONS),
+                "PRODUCT_STORAGE": self.fake.random_element(STORAGE_OPTIONS),
+                "PRODUCT_PROCESSOR": self.fake.random_element(PROCESSOR_OPTIONS),
+                "PRODUCT_SCREEN_SIZE": self.fake.random_element(SCREEN_SIZE_OPTIONS),
             })
         elif category == "настольные компьютеры":
             specs.update({
-                "ram": self.fake.random_element(RAM_OPTIONS),
-                "storage": self.fake.random_element(STORAGE_OPTIONS),
-                "processor": self.fake.random_element(PROCESSOR_OPTIONS),
-                "gpu": self.fake.random_element(GPU_OPTIONS),
+                "PRODUCT_RAM": self.fake.random_element(RAM_OPTIONS),
+                "PRODUCT_STORAGE": self.fake.random_element(STORAGE_OPTIONS),
+                "PRODUCT_PROCESSOR": self.fake.random_element(PROCESSOR_OPTIONS),
+                "PRODUCT_GPU": self.fake.random_element(GPU_OPTIONS),
             })
         elif category == "мониторы":
             specs.update({
-                "screen_size": self.fake.random_element(SCREEN_SIZE_OPTIONS),
-                "resolution": self.fake.random_element(RESOLUTION_OPTIONS),
-                "refresh_rate": self.fake.random_element(REFRESH_RATE_OPTIONS),
+                "PRODUCT_SCREEN_SIZE": self.fake.random_element(SCREEN_SIZE_OPTIONS),
+                "PRODUCT_RESOLUTION": self.fake.random_element(RESOLUTION_OPTIONS),
+                "PRODUCT_REFRESH_RATE": self.fake.random_element(REFRESH_RATE_OPTIONS),
             })
         elif category == "клавиатуры":
             specs.update({
-                "type": self.fake.random_element(KEYBOARD_TYPE_OPTIONS),
-                "layout": self.fake.random_element(KEYBOARD_LAYOUT_OPTIONS),
-                "backlight": self.fake.random_element(KEYBOARD_BACKLIGHT_OPTIONS),
+                "PRODUCT_TYPE": self.fake.random_element(KEYBOARD_TYPE_OPTIONS),
+                "PRODUCT_LAYOUT": self.fake.random_element(KEYBOARD_LAYOUT_OPTIONS),
+                "PRODUCT_BACKLIGHT": self.fake.random_element(KEYBOARD_BACKLIGHT_OPTIONS),
             })
         elif category == "мыши":
             specs.update({
-                "type": self.fake.random_element(MOUSE_TYPE_OPTIONS),
-                "dpi": self.fake.random_element(MOUSE_DPI_OPTIONS),
-                "buttons": self.fake.random_element(MOUSE_BUTTONS_OPTIONS),
+                "PRODUCT_TYPE": self.fake.random_element(MOUSE_TYPE_OPTIONS),
+                "PRODUCT_DPI": self.fake.random_element(MOUSE_DPI_OPTIONS),
+                "BUTTONS": self.fake.random_element(MOUSE_BUTTONS_OPTIONS),
             })
 
         product = Product(
-            name=self.fake.word().capitalize() + " " + self.fake.word().capitalize(),
-            category=category,
-            specs=specs
+            0,
+            self.fake.word().capitalize() + " " + self.fake.word().capitalize(),
+            category,
+            specs
         )
 
         print(f"Сгенерирован товар: {product}")
