@@ -70,6 +70,11 @@ if __name__ == "__main__":
                     break
 
                 medical_ticket = assistant.parse_user_request(user_request)
+
+                if medical_ticket is None:
+                    print("Запрос не содержит подходящей информации для обращения в скорую")
+                    break
+
                 db.add_medical_ticket(medical_ticket)
                 # result = assistant.create_ticket(user_request)
                 # print(result)
