@@ -241,3 +241,59 @@ class DatabaseManager:
                 medical_tickets.append(new_medical_ticket)
 
             return medical_tickets
+
+    def get_tickets_sorted(self) -> List[MedicalTicket]:
+        """
+        Возвращает обращения, отсортированные по приоритету и времени
+        """
+
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT 
+                    MEDICAL_TICKET_ID, MEDICAL_TICKET_SYMPTOMS, MEDICAL_TICKET_CREATED_AT,
+                    MEDICAL_TICKET_PRIORITY, MEDICAL_TICKET_PATIENT_INFO, MEDICAL_TICKET_STATUS
+                FROM 
+                    MEDICAL_TICKETS
+                ORDER BY
+                    CASE MEDICAL_TICKET_STATUS
+                            WHEN 'Новый' THEN 1
+                            WHEN 'В работе' THEN 2
+                            WHEN 'Завершен' THEN 3
+                            ELSE 4
+                    END, 
+                    CASE MEDICAL_TICKET_PRIORITY
+                        WHEN 'КРИТИЧЕСКИЙ' THEN 1
+                        WHEN 'Высокий' THEN 2
+                        WHEN 'Средний' THEN 3
+                        WHEN 'Низкий' THEN 4
+                        ELSE 5
+                    END,
+                    MEDICAL_TICKET_CREATED_AT DESC
+            """)
+            return self._rows_to_tickets(cursor.fetchall())
+
+    def update_ticket_status(self, ticket_id: int, new_status: str):
+        """Обновляет статус обращения"""
+
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                UPDATE MEDICAL_TICKETS
+                SET MEDICAL_TICKET_STATUS = ?
+                WHERE MEDICAL_TICKET_ID = ?
+            """, (new_status, ticket_id))
+            conn.commit()
+
+    def _rows_to_tickets(self, rows) -> List[MedicalTicket]:
+        tickets = []
+        for row in rows:
+            tickets.append(MedicalTicket(
+                row[0],
+                row[1].split(','),
+                datetime.fromisoformat(row[2]),
+                row[3],
+                row[4],
+                row[5]
+            ))
+        return tickets

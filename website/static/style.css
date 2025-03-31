@@ -1,0 +1,195 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.navbar {
+    background-color: #808080;
+    padding: 15px;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.navbar a:hover {
+    background-color: #a0a0a0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Добавьте в static/style.css */
+
+/* Стили для контейнера формы */
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для текстового поля */
+.symptoms-textarea {
+    width: 97.5%;
+    min-height: 200px; /* Большая начальная высота */
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    resize: vertical; /* Позволяет изменять высоту */
+    margin-bottom: 20px;
+    transition: border 0.3s ease;
+}
+
+.symptoms-textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* Стили для кнопки */
+.submit-btn {
+    display: block;
+    width: 200px;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin: 0 auto; /* Центрирование кнопки */
+}
+
+.submit-btn:hover {
+    background-color: #0069d9;
+}
+
+/* Стили для таблицы */
+.tickets-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 16px;
+    min-width: 800px; /* Минимальная ширина таблицы */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.tickets-table thead tr {
+    background-color: #007bff;
+    color: #fff;
+    text-align: left;
+}
+
+.tickets-table th,
+.tickets-table td {
+    padding: 15px 20px; /* Больше отступов в ячейках */
+    border-bottom: 1px solid #ddd;
+}
+
+.tickets-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.tickets-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Ширина колонок */
+.tickets-table th:nth-child(1),
+.tickets-table td:nth-child(1) {
+    width: 5%; /* ID */
+}
+
+.tickets-table th:nth-child(2),
+.tickets-table td:nth-child(2) {
+    width: 30%; /* Симптомы */
+}
+
+.tickets-table th:nth-child(3),
+.tickets-table td:nth-child(3) {
+    width: 10%; /* Приоритет */
+}
+
+.tickets-table th:nth-child(4),
+.tickets-table td:nth-child(4) {
+    width: 15%; /* Дата */
+}
+
+.tickets-table th:nth-child(5),
+.tickets-table td:nth-child(5) {
+    width: 15%; /* Статус */
+}
+
+.tickets-table th:nth-child(6),
+.tickets-table td:nth-child(6) {
+    width: 25%; /* Действия */
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.status-new {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.status-in-progress {
+    background-color: #fff8e1;
+    color: #ff8f00;
+}
+
+.status-completed {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+/* ... остальные стили из предыдущей версии ... */
+
+.status-form select {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.button.small {
+    padding: 5px 10px;
+    font-size: 0.8em;
+}
+
+/* Цвета для приоритетов */
+tr.низкий { background-color: #e7f5e7; }
+tr.средний { background-color: #fff3cd; }
+tr.высокий { background-color: #ffdddd; }
+tr.критический { background-color: #ffcccc; }

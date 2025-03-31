@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Опишите ваши симптомы</h1>
+    <form method="POST">
+        <textarea class="symptoms-textarea" name="symptoms" required
+                  placeholder="Подробно опишите ваши симптомы, например: Головная боль и температура 38.5 в течение двух дней..."></textarea>
+        <button type="submit" class="submit-btn">Отправить обращение</button>
+    </form>
+{% endblock %}

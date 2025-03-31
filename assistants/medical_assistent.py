@@ -73,17 +73,17 @@ class MedicalAssistant:
             print(f"Ошибка парсинга ответа: {e}")
             return None
 
-    # def create_ticket(self, user_input: str) -> str:
-    #     """
-    #     Создает обращение на основе описания симптомов
-    #     """
-    #
-    #     medical_ticket = self.parse_user_request(user_input)
-    #     if not medical_ticket:
-    #         return "Не удалось обработать описание симптомов. Пожалуйста, уточните детали."
-    #
-    #     ticket_id = self.db.add_ticket(medical_ticket)
-    #     return (f"Медицинский тикет #{ticket_id} создан.\n"
-    #             f"Симптомы: {', '.join(medical_ticket.symptoms)}\n"
-    #             f"Приоритет: {medical_ticket.priority.value}\n"
-    #             f"Статус: {medical_ticket.status}")
+    def create_ticket(self, user_input: str) -> int:
+        """
+        Создает обращение на основе описания симптомов
+        """
+
+        medical_ticket = self.parse_user_request(user_input)
+        if not medical_ticket:
+            return 1
+            # return "Не удалось обработать описание симптомов. Пожалуйста, уточните детали."
+
+        self.db.add_medical_ticket(medical_ticket)
+
+        # return "Зарегистрировано новое обращение"
+        return 0
