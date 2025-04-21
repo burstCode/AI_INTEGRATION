@@ -25,8 +25,7 @@ if __name__ == "__main__":
         print("--- Примеры интеграций больших языковых моделей в клиентоориентированные приложения ---")
         print("Выберите контекст для рассмотрения:\n"
               "1. Интернет-магазин электроники\n"
-              "2. Бронирование столика в ресторане\n"
-              "3. Обращение в скорую помощь\n"
+              "2. Обращение в скорую помощь\n"
               "0. Выход")
         user_input = input("> ")
 
@@ -56,47 +55,29 @@ if __name__ == "__main__":
                 for product in products:
                     print(product)
         elif user_input == "2":
-            # Инициализация базы данных
-            db = ReservationDatabaseManager()
-
-            # Инициализация помощника
-            assistant = ReservationAssistant(bot, db)
-
-            user_request = ""
-
-            while user_request != "0":
-                # Запрос пользователя
-                user_request = input(
-                    "Введите запрос на естественном языке для бронирования столика (0 для выхода из контекста): ")
-
-                if user_request == "0":
-                    break
-
-                result = assistant.make_reservation(user_request)
-                print(result)
-        elif user_input == "3":
-            # Инициализация БД
             db_manager = MedicalDatabaseManager()
-
-            # Инициализация ассистента
             assistant = MedicalAssistant(bot, db_manager)
 
-            user_input = ""
-
-            while user_input != "0":
-                user_request = input("На естественном языке введите запрос к службе скорой, например, опишите "
-                                     "симптомы (0 для выхода из контекста): ")
-
-                if user_request == "0":
+            # Интерактивный диалог!
+            while True:
+                print("\n1. Создать новый тикет")
+                print("2. Просмотреть последние тикеты")
+                print("0. Выход")
+                
+                choice = input("Выберите действие: ")
+                
+                if choice == "1":
+                    result = assistant.create_ticket()
+                    print(result)
+                elif choice == "2":
+                    tickets = db_manager.get_tickets(5)
+                    for ticket in tickets:
+                        print(f"\nТикет #{ticket.id}")
+                        print(f"Симптомы: {', '.join(ticket.symptoms)}")
+                        print(f"Приоритет: {ticket.priority.display_name}")
+                        print(f"Дата: {ticket.created_at.strftime('%Y-%m-%d %H:%M')}")
+                elif choice == "0":
                     break
-
-                result = assistant.create_ticket(user_request)
-                print(result)
-
-                # Вывод всех тикетов
-                print("\nПоследние тикеты:")
-                for ticket in db_manager.get_tickets(5):
-                    print(f"#{ticket.id} [{ticket.priority.value}]: {', '.join(ticket.symptoms)}")
         elif user_input == "0":
             print("Пока-пока!")
         else:
